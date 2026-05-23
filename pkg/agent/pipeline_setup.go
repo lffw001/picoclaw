@@ -71,7 +71,14 @@ func (p *Pipeline) SetupTurn(ctx context.Context, ts *turnState) (*turnExecution
 			history, messages, fit = trimHistoryToFitContextWindow(
 				history,
 				func(trimmedHistory []providers.Message) []providers.Message {
-					rebuildPromptReq := promptBuildRequestForTurn(ts, trimmedHistory, summary, ts.userMessage, ts.media, cfg)
+					rebuildPromptReq := promptBuildRequestForTurn(
+						ts,
+						trimmedHistory,
+						summary,
+						ts.userMessage,
+						ts.media,
+						cfg,
+					)
 					rebuildPromptReq.ActiveSkills = append([]string(nil), contextualSkills...)
 					rebuilt := ts.agent.ContextBuilder.BuildMessagesFromPrompt(rebuildPromptReq)
 					return resolveMediaRefs(rebuilt, p.MediaStore, maxMediaSize)
